@@ -1,66 +1,62 @@
 describe("when applying a validation constraint", ["qvc/ConstraintResolver"], function(ConstraintResolver){
-  
+
 
   var cr,
-    loadSpy,
-    validatable;
-    
+    loadSpy;
+
   beforeEach(function(){
     loadSpy = sinon.spy(function(name, callback){
-      callback(name, []);
+      callback([]);
     });
 
     cr = new ConstraintResolver({
       loadConstraints: loadSpy
     });
-    
-    validatable = {
-      applyConstraints: sinon.spy()
-    };
   });
-  
+
   describe("for the first time", function(){
-          
+    var result;
+
     beforeEach(function(){
-      
+
       because: {
-        cr.applyValidationConstraints("name", validatable);
+        result = cr.applyValidationConstraints("name");
       }
-      
     });
-    
+
     it("should ask qvc for the constraint", function(){
       expect(loadSpy.callCount).toBe(1);
     });
-    
-    it("should apply the constraint to the validatable", function(){
-      expect(validatable.applyConstraints.callCount).toBe(1);
+
+    it("should apply the constraint to the validatable", function(done){
+      result.then(done);
     });
   });
-  
+
   describe("more than once", function(){
-    
+    var result1, result2;
+
     beforeEach(function(){
-      
+
       because: {
-        cr.applyValidationConstraints("name", validatable);
-        cr.applyValidationConstraints("name", validatable);
+        result1 = cr.applyValidationConstraints("name");
+        result2 = cr.applyValidationConstraints("name");
       }
-      
+
     });
-    
+
     it("should ask qvc for the constraint only once", function(){
       expect(loadSpy.callCount).toBe(1);
     });
-    
-    it("should apply the constraint to all the validatables", function(){
-      expect(validatable.applyConstraints.callCount).toBe(2);
+
+    it("should apply the constraint to all the validatables", function(done){
+      Promise.all([result1, result2]).then(done);
     });
   });
-  
+
   describe("while waiting for the constraints to load", function(){
-    
-    var loadCallback;
+
+    var loadCallback, result1, result2;
 
     beforeEach(function(){
       loadSpy = sinon.spy(function(name, callback){
@@ -72,23 +68,22 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
       cr = new ConstraintResolver({
         loadConstraints: loadSpy
       });
-      
-      cr.applyValidationConstraints("name", validatable);
+
+      result1 = cr.applyValidationConstraints("name");
 
       because: {
-        cr.applyValidationConstraints("name", validatable);
+        result2 = cr.applyValidationConstraints("name");
         loadCallback(name, []);
       }
-      
     });
-    
+
     it("should ask qvc for the constraint only once", function(){
       expect(loadSpy.callCount).toBe(1);
     });
-    
-    
-    it("should apply the constraint to all the validatables", function(){
-      expect(validatable.applyConstraints.callCount).toBe(2);
+
+
+    it("should apply the constraint to all the validatables", function(done){
+      Promise.all([result1, result2]).then(done);
     });
   });
 });

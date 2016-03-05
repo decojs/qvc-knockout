@@ -1,12 +1,12 @@
 define([
-"qvc/Executable", 
-  "qvc/ExecutableResult", 
-  "qvc/utils", 
+  "qvc/Executable",
+  "qvc/ExecutableResult",
+  "qvc/utils",
   "qvc/ajax",
   "qvc/ConstraintResolver",
   "qvc/errorHandler",
-  "knockout", 
-  "qvc/koExtensions"], 
+  "knockout",
+  "qvc/koExtensions"],
   function(
     Executable,
     ExecutableResult,
@@ -15,7 +15,7 @@ define([
     ConstraintResolver,
     errorHandler,
     ko){
-  
+
   function QVC(){
 
     var qvc = this;
@@ -47,9 +47,9 @@ define([
         }
         executable.onComplete();
       });
-    
+
     };
-    
+
     this.loadConstraints = function(name, callback){
       var url = ajax.addToPath(qvc.config.baseUrl, "constraints/" + name);
       ajax(ajax.addParamToUrl(url, 'cacheKey', qvc.config.cacheKey), null, "GET", function(xhr){
@@ -65,14 +65,14 @@ define([
           }catch(e){
             var response = {parameters: []};
           }
-          callback(name, response.parameters);
+          callback(response.parameters);
         }else{
           errorHandler.onError(xhr.responseText);
         }
       });
     };
 
-    
+
     this.config = {
       baseUrl: "/qvc",
       csrf: "",
@@ -81,8 +81,8 @@ define([
   };
 
   var qvc = new QVC();
-  
-  function createExecutable(name, type, parameters, callbacks){  
+
+  function createExecutable(name, type, parameters, callbacks){
     var executable = new Executable(name, type, parameters || {}, callbacks || {}, qvc);
     var execute = executable.execute.bind(executable);
     execute.isValid = ko.computed(executable.isValid, executable);
@@ -123,10 +123,10 @@ define([
     execute.validator = executable.validator;
     execute.parameters = executable.parameters;
     execute.validate = executable.validate.bind(executable);
-    
+
     return execute;
   }
-  
+
   return {
     createCommand: function(name, parameters, hooks){
       if(name == null || name.length == 0)

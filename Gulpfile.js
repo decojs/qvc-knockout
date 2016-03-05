@@ -7,4 +7,12 @@ gulp.task('test', function(done){
     singleRun: true,
     browsers: ['PhantomJS']
   }, done).start();
-})
+});
+
+gulp.task('watch', function(done){
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: false,
+    browsers: ['PhantomJS']
+  }, done).start();
+});

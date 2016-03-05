@@ -20,7 +20,7 @@ define([
     init: {
       recursivlyExtendParameters(self.validatableParameters, self.validatableFields, [], name);
       if(constraintResolver)
-        constraintResolver.applyValidationConstraints(name, self);
+        constraintResolver.applyValidationConstraints(name).then(self.applyConstraints);
     }
   }
   
