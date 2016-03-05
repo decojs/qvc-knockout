@@ -1,24 +1,23 @@
 define([
-  "qvc/ExecutableResult", 
-  "qvc/Validatable", 
-  "qvc/utils", 
+  "qvc/ExecutableResult",
+  "qvc/Validatable",
+  "qvc/utils",
   "knockout"
 ], function(
-  ExecutableResult, 
-  Validatable, 
-  utils, 
+  ExecutableResult,
+  Validatable,
+  utils,
   ko){
 
-  function Executable(name, type, parameters, hooks, qvc){    
+  function Executable(name, type, parameters, hooks, qvc){
     Validatable.call(this, name, parameters, qvc.constraintResolver)
-    
+
     this.name = name;
     this.type = type;
     this.qvc = qvc;
     this.isBusy = ko.observable(false);
     this.hasError = ko.observable(false);
-    this.result = new ExecutableResult();
-    
+
     this.parameters = Object.seal(parameters);
     this.hooks = utils.extend({
       beforeExecute: function () {},
@@ -30,9 +29,9 @@ define([
       invalid: function() {}
     }, hooks);
   }
-    
+
   Executable.prototype = utils.inheritsFrom(Validatable);
-    
+
   Executable.prototype.execute = function () {
     if (this.isBusy()) {
       return false;
@@ -57,30 +56,30 @@ define([
     return false;
   };
 
-  Executable.prototype.onError = function () {
-    if("violations" in this.result && this.result.violations != null && this.result.violations.length > 0){
-      this.applyViolations(this.result.violations);
+  Executable.prototype.onError = function (result) {
+    if("violations" in result && result.violations != null && result.violations.length > 0){
+      this.applyViolations(result.violations);
       this.hooks.invalid();
     }else{
       this.hasError(true);
-      this.hooks.error(this.result);
+      this.hooks.error(result);
     }
   };
 
-  Executable.prototype.onSuccess = function () {
+  Executable.prototype.onSuccess = function (result) {
     this.hasError(false);
     this.clearValidationMessages();
-    this.hooks.success(this.result);
-    this.hooks.result(this.result.result);
+    this.hooks.success(result);
+    this.hooks.result(result.result);
   };
 
   Executable.prototype.onComplete = function () {
     this.hooks.complete();
     this.isBusy(false);
   };
-  
+
   Executable.Command = "command";
   Executable.Query = "query";
-  
+
   return Executable;
 });

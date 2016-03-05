@@ -3,7 +3,7 @@ describe("when onError is called", [
 ], function(
   Executable
 ){
-  
+
   var executable,
     loadConstraintsSpy,
     errorSpy,
@@ -17,7 +17,7 @@ describe("when onError is called", [
     invalidSpy = sinon.spy();
 
     executable = new Executable("blabla", Executable.Command, {}, {error: errorSpy, invalid: invalidSpy}, {loadConstraints: loadConstraintsSpy});
-    
+
     sinon.spy(executable, 'applyViolations');
   });
 
@@ -25,9 +25,9 @@ describe("when onError is called", [
 
 
     because(function(){
-      executable.result.violations = [{fieldName:'', message:'oh noes'}];
-      
-      executable.onError();
+      executable.onError({
+        violations: [{fieldName:'', message:'oh noes'}]
+      });
     });
 
     it("should not set hasError to true", function(){
@@ -45,7 +45,7 @@ describe("when onError is called", [
     it("should call applyViolations", function(){
       expect(executable.applyViolations).toHaveBeenCalled();
     });
-    
+
     it("should be invalid", function(){
       expect(executable.isValid()).toBe(false);
     });
@@ -56,9 +56,9 @@ describe("when onError is called", [
 
 
     because(function(){
-      executable.result.violations = null;
-
-      executable.onError();
+      executable.onError({
+        violations: null
+      });
     });
 
     it("should set hasError to true", function(){
@@ -76,7 +76,7 @@ describe("when onError is called", [
     it("should not call applyViolations", function(){
       expect(executable.applyViolations).not.toHaveBeenCalled();
     });
-    
+
     it("should not be invalid", function(){
       expect(executable.isValid()).not.toBe(false);
     });
