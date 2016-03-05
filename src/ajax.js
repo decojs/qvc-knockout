@@ -25,43 +25,48 @@ define([], function(){
     return addParamToUrl(url, "cacheKey", Math.floor(Math.random()*Math.pow(2,53)));
   }
 
-  function ajax(url, object, method, callback){
+  function ajax(url, object, method){
     var xhr = new XMLHttpRequest();
-    
-    var isPost = (method === "POST");
-    var data = null;
-    
-    if(object){
+    var promise = new Promise(function(resolve, reject){
+      var isPost = (method === "POST");
+      var data = null;
+
+      if(object){
+
+        if(isPost){
+          data = dataToParams(object);
+        } else {
+          url = addParamsToUrl(url, object);
+        }
+      }
 
       if(isPost){
-        data = dataToParams(object);
-      } else {
-        url = addParamsToUrl(url, object);
+        url = cacheBust(url);
       }
-    }
-    
-    if(isPost){
-      url = cacheBust(url);
-    }
 
-    xhr.open(method, url, true);
-    
-    if(isPost && data){
-      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    }
-    
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    
-    xhr.onreadystatechange = function(){
-      if(xhr.readyState == 4){
-        callback(xhr);
+      xhr.open(method, url, true);
+
+      if(isPost && data){
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       }
-    }
-    
-    xhr.send(data);
-    return xhr;
-  }
 
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+      xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4){
+          if (xhr.status === 200) {
+            resolve(xhr.responseText);
+          }else{
+            reject(xhr.responseText);
+          }
+        }
+      }
+
+      xhr.send(data);
+    });
+    promise.abort = xhr.abort;
+    return promise;
+  };
   ajax.addParamToUrl = addParamToUrl;
   ajax.addParamsToUrl = addParamsToUrl;
   ajax.addToPath = addToPath;

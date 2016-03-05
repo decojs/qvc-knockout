@@ -52,30 +52,34 @@ define([
     }
     this.isBusy(true);
 
-    this.qvc.execute(this);
-    return false;
-  };
-
-  Executable.prototype.onError = function (result) {
-    if("violations" in result && result.violations != null && result.violations.length > 0){
-      this.applyViolations(result.violations);
-      this.hooks.invalid();
-    }else{
+    this.qvc.execute(this)
+    .then(function(result){
+      if (result.success === true) {
+        this.hasError(false);
+        this.clearValidationMessages();
+        this.hooks.success(result);
+        if(this.type === Executable.Query){
+          this.hooks.result(result.result);
+        }
+      } else if(result.valid !== true) {
+        this.applyViolations(result.violations || []);
+        this.hooks.invalid();
+      }else{
+        this.hasError(true);
+        this.hooks.error(result);
+      }
+    }.bind(this), function(result){
       this.hasError(true);
       this.hooks.error(result);
-    }
-  };
-
-  Executable.prototype.onSuccess = function (result) {
-    this.hasError(false);
-    this.clearValidationMessages();
-    this.hooks.success(result);
-    this.hooks.result(result.result);
-  };
-
-  Executable.prototype.onComplete = function () {
-    this.hooks.complete();
-    this.isBusy(false);
+    }.bind(this))
+    .then(function(){
+      this.hooks.complete();
+      this.isBusy(false);
+    }.bind(this), function(){
+      this.hooks.complete();
+      this.isBusy(false);
+    }.bind(this));
+    return false;
   };
 
   Executable.Command = "command";

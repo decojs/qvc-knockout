@@ -22,7 +22,7 @@ describe("when making a request", [
   describe("to the server", function(){
 
     because(function(done){
-      ajax("test", {}, "GET", done);
+      ajax("test", {}, "GET").then(done);
       request.respond(200);
     });
 
@@ -34,7 +34,7 @@ describe("when making a request", [
   describe("where the url contains a query string", function(){
 
     because(function(done){
-      ajax("test.html?a=5", {}, "GET", done);
+      ajax("test.html?a=5", {}, "GET").then(done);
       request.respond(200);
     });
 
@@ -48,7 +48,7 @@ describe("when making a request", [
   describe("where the url contains a query string and data", function(){
 
     because(function(done){
-      ajax("test.html?a=5", {b:3}, "GET", done);
+      ajax("test.html?a=5", {b:3}, "GET").then(done);
       request.respond(200);
     });
 
@@ -62,7 +62,7 @@ describe("when making a request", [
   describe("where the url contains a query string ending with & and data", function(){
 
     because(function(done){
-      ajax("test.html?a=5&", {b:3}, "GET", done);
+      ajax("test.html?a=5&", {b:3}, "GET").then(done);
       request.respond(200);
     });
 
@@ -76,7 +76,7 @@ describe("when making a request", [
   describe("which is a PUT", function(){
 
     because(function(done){
-      ajax("test.html", {b:3}, "PUT", done);
+      ajax("test.html", {b:3}, "PUT").then(done);
       request.respond(200);
     });
 
@@ -90,7 +90,7 @@ describe("when making a request", [
   describe("which is a POST", function(){
 
     because(function(done){
-      ajax("test.html", {b:3}, "POST", done);
+      ajax("test.html", {b:3}, "POST").then(done);
       request.respond(200);
     });
 

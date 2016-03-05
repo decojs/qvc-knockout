@@ -5,15 +5,12 @@ define([], function(){
   }
 
   ConstraintResolver.prototype.applyValidationConstraints = function(name){
-    return this.constraints[name] || this.addConstraints(name);
-  };
+    if(name in this.constraints === false){
+      this.constraints[name] = this.qvc.loadConstraints(name);
+    }
 
-  ConstraintResolver.prototype.addConstraints = function(name){
-    var qvc = this.qvc;
-    return this.constraints[name] = new Promise(function(resolve){
-      qvc.loadConstraints(name, resolve);
-    });
-  }
+    return this.constraints[name];
+  };
 
   return ConstraintResolver;
 });

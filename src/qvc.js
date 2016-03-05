@@ -29,46 +29,26 @@ define([
         csrfToken: qvc.config.csrf
       };
       var url = ajax.addToPath(qvc.config.baseUrl, executable.type + "/" + executable.name);
-      ajax(url, data, "POST", function (xhr) {
-        if (xhr.status === 200) {
-          var result = new ExecutableResult(JSON.parse(xhr.responseText || "{}"));
-          if (result.success === true) {
-            executable.onSuccess(result);
-          } else {
-            if(result.exception && result.exception.message){
-              errorHandler.onError(result.exception.message);
-            }
-            executable.onError(result);
-          }
-        } else {
-          var result = new ExecutableResult({exception: {message: xhr.responseText, cause: xhr}});
-          errorHandler.onError(result.exception.message);
-          executable.onError(result);
-        }
-        executable.onComplete();
+      return ajax(url, data, "POST")
+      .then(function (responseText) {
+        return new ExecutableResult(JSON.parse(responseText || "{}"));
+      }, function(responseText){
+        return new ExecutableResult({exception: {message: responseText}});
       });
-
     };
 
-    this.loadConstraints = function(name, callback){
+    this.loadConstraints = function(name){
       var url = ajax.addToPath(qvc.config.baseUrl, "constraints/" + name);
-      ajax(ajax.addParamToUrl(url, 'cacheKey', qvc.config.cacheKey), null, "GET", function(xhr){
-        if (xhr.status === 200) {
-          try{
-            var response = JSON.parse(xhr.responseText || "{\"parameters\":[]}");
-            if("parameters" in response == false){
-              response.parameters = [];
-            }
-            if(response.exception && response.exception.message){
-              errorHandler.onError(response.exception.message);
-            }
-          }catch(e){
-            var response = {parameters: []};
-          }
-          callback(response.parameters);
-        }else{
-          errorHandler.onError(xhr.responseText);
+      return ajax(ajax.addParamToUrl(url, 'cacheKey', qvc.config.cacheKey), null, "GET")
+      .then(function(responseText){
+        try{
+          var response = JSON.parse(responseText || "{\"parameters\":[]}");
+          return response.parameters || [];
+        }catch(e){
+          return [];
         }
+      }, function(responseText){
+        return [];
       });
     };
 

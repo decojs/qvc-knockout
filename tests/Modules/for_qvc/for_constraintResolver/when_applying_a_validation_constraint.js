@@ -5,9 +5,7 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
     loadSpy;
 
   beforeEach(function(){
-    loadSpy = sinon.spy(function(name, callback){
-      callback([]);
-    });
+    loadSpy = sinon.stub().returns(Promise.resolve([]));
 
     cr = new ConstraintResolver({
       loadConstraints: loadSpy
@@ -36,11 +34,13 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
   describe("more than once", function(){
     var result1, result2;
 
-    beforeEach(function(){
+    beforeEach(function(done){
 
       because: {
         result1 = cr.applyValidationConstraints("name");
-        result2 = cr.applyValidationConstraints("name");
+        result2 = result1.then(function(){
+          cr.applyValidationConstraints("name");
+        }).then(done);
       }
 
     });
@@ -56,14 +56,10 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
 
   describe("while waiting for the constraints to load", function(){
 
-    var loadCallback, result1, result2;
+    var result1, result2;
 
     beforeEach(function(){
-      loadSpy = sinon.spy(function(name, callback){
-        loadCallback = function(){
-          callback(name);
-        };
-      });
+      loadSpy = sinon.stub().returns(Promise.resolve([]));
 
       cr = new ConstraintResolver({
         loadConstraints: loadSpy
@@ -73,7 +69,6 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
 
       because: {
         result2 = cr.applyValidationConstraints("name");
-        loadCallback(name, []);
       }
     });
 
