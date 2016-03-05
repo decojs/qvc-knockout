@@ -1,0 +1,27 @@
+{
+  "name": "qvc-client",
+  "description": "QVC client",
+  "keywords": [
+  ],
+  "authors": [
+    "Marius Gundersen <bower@mariusgundersen.net>"
+  ],
+  "version": "0.9.1",
+  "main": "dist/qvc.js",
+  "ignore": [
+    "**/.*",
+    "**/*.cmd",
+    "/*.js",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.11",
+    "knockout": "^3.2.0",
+    "json": "latest",
+    "es5-shim": "~2.1.0",
+    "es6-promise": "~2.0.0"
+  },
+  "_source": "https://github.com/decojs/DecoJS"
+}
