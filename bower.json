@@ -6,15 +6,9 @@
   "authors": [
     "Marius Gundersen <bower@mariusgundersen.net>"
   ],
-  "version": "0.9.1",
   "main": "dist/qvc.js",
   "ignore": [
-    "**/.*",
-    "**/*.cmd",
-    "/*.js",
-    "node_modules",
-    "bower_components",
-    "tests"
+    "!src/**/*.js"
   ],
   "dependencies": {
     "requirejs": "~2.1.11",
