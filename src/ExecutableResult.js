@@ -1,15 +1,13 @@
-define(["qvc/utils"], function(utils){
+define(function(){
   function ExecutableResult(result){
-    
-    this.success = false;
-    this.valid = false;
-    this.result = null;
-    this.exception = null;
-    this.violations = [];
-  
-    utils.extend(this, result);
-  
+    result = result || {};
+
+    this.success = result.success || false;
+    this.valid = result.valid || false;
+    this.result = result.result || null;
+    this.exception = result.exception || null;
+    this.violations = result.violations || [];
   };
-  
+
   return ExecutableResult;
 });

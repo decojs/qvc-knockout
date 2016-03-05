@@ -19,15 +19,17 @@ define([
     this.hasError = ko.observable(false);
 
     this.parameters = Object.seal(parameters);
-    this.hooks = utils.extend({
-      beforeExecute: function () {},
-      canExecute: function(){return true;},
-      error: function () {},
-      success: function () {},
-      result: function(){},
-      complete: function () {},
-      invalid: function() {}
-    }, hooks);
+
+    hooks = hooks || {};
+    this.hooks = {
+      beforeExecute: hooks.beforeExecute || function () {},
+      canExecute: hooks.canExecute || function(){return true;},
+      error: hooks.error || function () {},
+      success: hooks.success || function () {},
+      result: hooks.result || function(){},
+      complete: hooks.complete || function () {},
+      invalid: hooks.invalid || function() {}
+    };
   }
 
   Executable.prototype = utils.inheritsFrom(Validatable);
