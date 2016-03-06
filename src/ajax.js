@@ -18,7 +18,11 @@ define([], function(){
   }
 
   function addToPath(url, segment){
-    return url + (url.match(/\/$/) ? "" : "/") + segment;
+    for(var i=1; i<arguments.length; i++){
+      segment = arguments[i];
+      url = url + (url[url.length-1] == '/' ? "" : "/") + segment;
+    }
+    return url;
   }
 
   function cacheBust(url){

@@ -1,63 +1,21 @@
 define([
   "qvc/Executable",
-  "qvc/ExecutableResult",
-  "qvc/utils",
-  "qvc/ajax",
   "qvc/ConstraintResolver",
-  "qvc/errorHandler",
   "knockout",
   "qvc/koExtensions"],
   function(
     Executable,
-    ExecutableResult,
-    utils,
-    ajax,
     ConstraintResolver,
-    errorHandler,
     ko){
 
   function QVC(){
-
-    var qvc = this;
-
-    this.constraintResolver = new ConstraintResolver(qvc);
-
-    this.execute = function(executable){
-      var parameters = ko.toJS(executable.parameters);
-      var data = {
-        parameters: JSON.stringify(parameters),
-        csrfToken: qvc.config.csrf
-      };
-      var url = ajax.addToPath(qvc.config.baseUrl, executable.type + "/" + executable.name);
-      return ajax(url, data, "POST")
-      .then(function (responseText) {
-        return new ExecutableResult(JSON.parse(responseText || "{}"));
-      }, function(responseText){
-        return new ExecutableResult({exception: {message: responseText}});
-      });
-    };
-
-    this.loadConstraints = function(name){
-      var url = ajax.addToPath(qvc.config.baseUrl, "constraints/" + name);
-      return ajax(ajax.addParamToUrl(url, 'cacheKey', qvc.config.cacheKey), null, "GET")
-      .then(function(responseText){
-        try{
-          var response = JSON.parse(responseText || "{\"parameters\":[]}");
-          return response.parameters || [];
-        }catch(e){
-          return [];
-        }
-      }, function(responseText){
-        return [];
-      });
-    };
-
-
     this.config = {
       baseUrl: "/qvc",
       csrf: "",
       cachekey: Date.now()
-    }
+    };
+
+    this.constraintResolver = new ConstraintResolver(this.config);
   };
 
   var qvc = new QVC();

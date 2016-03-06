@@ -2,11 +2,13 @@ define([
   "qvc/ExecutableResult",
   "qvc/Validatable",
   "qvc/utils",
+  "qvc/execute",
   "knockout"
 ], function(
   ExecutableResult,
   Validatable,
   utils,
+  execute,
   ko){
 
   function Executable(name, type, parameters, hooks, qvc){
@@ -54,7 +56,7 @@ define([
     }
     this.isBusy(true);
 
-    this.qvc.execute(this)
+    execute(this.type, this.name, this.parameters, this.qvc.config)
     .then(function(result){
       if (result.success === true) {
         this.hasError(false);

@@ -1,16 +1,26 @@
-describe("when applying a validation constraint", ["qvc/ConstraintResolver"], function(ConstraintResolver){
+describe("when applying a validation constraint", {
+  'qvc/loadConstraints': function(){
+    return sinon.stub().returns(Promise.resolve([]))
+  }
+}, [
+  "qvc/ConstraintResolver",
+  "qvc/loadConstraints"
+], function(
+  ConstraintResolver,
+  loadSpy
+){
 
-
-  var cr,
-    loadSpy;
+  var cr;
 
   beforeEach(function(){
-    loadSpy = sinon.stub().returns(Promise.resolve([]));
-
     cr = new ConstraintResolver({
-      loadConstraints: loadSpy
+      baseUrl: 'qvc'
     });
   });
+
+  afterEach(function(){
+    loadSpy.reset();
+  })
 
   describe("for the first time", function(){
     var result;
@@ -59,12 +69,6 @@ describe("when applying a validation constraint", ["qvc/ConstraintResolver"], fu
     var result1, result2;
 
     beforeEach(function(){
-      loadSpy = sinon.stub().returns(Promise.resolve([]));
-
-      cr = new ConstraintResolver({
-        loadConstraints: loadSpy
-      });
-
       result1 = cr.applyValidationConstraints("name");
 
       because: {
