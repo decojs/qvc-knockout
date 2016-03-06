@@ -72,9 +72,9 @@ define([
         this.hasError(true);
         this.hooks.error(result);
       }
-    }.bind(this), function(result){
+    }.bind(this), function(error){
       this.hasError(true);
-      this.hooks.error(result);
+      this.hooks.error(error);
     }.bind(this))
     .then(function(){
       this.hooks.complete();
