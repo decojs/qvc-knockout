@@ -64,7 +64,7 @@ define([
           this.hooks.result(result.result);
         }
       } else if(result.valid !== true) {
-        this.applyViolations(result.violations || []);
+        this.applyViolations(result.violations || [], this.name);
         this.hooks.invalid();
       }else{
         this.hasError(true);
