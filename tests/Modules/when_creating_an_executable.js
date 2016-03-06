@@ -18,7 +18,7 @@ describe("when creating an executable", {
     expect(executable.validator).toBeDefined();
   });
 
-  describe("and setting the success callback", function(){
+  describe("and setting the onSuccess callback", function(){
 
     var spy,
       successResult;
@@ -29,7 +29,7 @@ describe("when creating an executable", {
       spy = deferred();
 
       because: {
-        successResult = executable.success(spy.resolve);
+        successResult = executable.onSuccess(spy.resolve);
         executable();
       }
     });
@@ -38,13 +38,13 @@ describe("when creating an executable", {
       expect(successResult).toBe(executable);
     });
 
-    it("should call the success callback on success", function(done){
+    it("should call the onSuccess callback on success", function(done){
       spy.then(done);
     });
 
   });
 
-  describe("and setting the error callback", function(){
+  describe("and setting the onError callback", function(){
 
     var spy,
       errorResult;
@@ -55,7 +55,7 @@ describe("when creating an executable", {
       spy = deferred();
 
       because: {
-        errorResult = executable.error(spy.resolve);
+        errorResult = executable.onError(spy.resolve);
         executable();
       }
     });
@@ -64,7 +64,7 @@ describe("when creating an executable", {
       expect(errorResult).toBe(executable);
     });
 
-    it("should call the error callback on error", function(done){
+    it("should call the onError callback on error", function(done){
       spy.then(done);
     });
   });
@@ -144,7 +144,7 @@ describe("when creating an executable", {
     });
   });
 
-  describe("and setting the complete callback", function(){
+  describe("and setting the onComplete callback", function(){
 
     var spy,
       completeResult;
@@ -155,7 +155,7 @@ describe("when creating an executable", {
       spy = deferred();
 
       because: {
-        completeResult = executable.complete(spy.resolve);
+        completeResult = executable.onComplete(spy.resolve);
         executable();
       }
     });
@@ -164,7 +164,7 @@ describe("when creating an executable", {
       expect(completeResult).toBe(executable);
     });
 
-    it("should call the complete callback on complete", function(done){
+    it("should call the onComplete callback on complete", function(done){
       spy.then(done);
     });
   });

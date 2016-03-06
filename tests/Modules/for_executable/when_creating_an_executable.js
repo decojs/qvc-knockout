@@ -38,19 +38,19 @@ describe("when creating an executable", {
   });
 
   it("should have way to set the success hook", function(){
-    expect(executable.success).toBeDefined();
+    expect(executable.onSuccess).toBeDefined();
   });
 
   it("should have way to set the invalid hook", function(){
-    expect(executable.invalid).toBeDefined();
-  });
-
-  it("should have way to set the complete hook", function(){
-    expect(executable.complete).toBeDefined();
+    expect(executable.onInvalid).toBeDefined();
   });
 
   it("should have way to set the error hook", function(){
-    expect(executable.error).toBeDefined();
+    expect(executable.onError).toBeDefined();
+  });
+
+  it("should have way to set the complete hook", function(){
+    expect(executable.onComplete).toBeDefined();
   });
 
   it("should have a way to clear validation messages", function(){

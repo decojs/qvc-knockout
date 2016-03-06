@@ -65,18 +65,18 @@ define([
   function createExecutable(name, type, parameters, callbacks){
     var executable = new Executable(name, type, parameters || {}, callbacks || {}, qvc);
     var execute = executable.execute.bind(executable);
-    execute.isValid = ko.computed(executable.isValid, executable);
-    execute.isBusy = ko.computed(executable.isBusy, executable);
-    execute.hasError = ko.computed(executable.hasError, executable);
-    execute.success = function(callback){
+    execute.isValid = ko.pureComputed(executable.isValid, executable);
+    execute.isBusy = ko.pureComputed(executable.isBusy, executable);
+    execute.hasError = ko.pureComputed(executable.hasError, executable);
+    execute.onSuccess = function(callback){
       executable.hooks.success = callback;
       return execute;
     };
-    execute.error = function(callback){
+    execute.onError = function(callback){
       executable.hooks.error = callback;
       return execute;
     };
-    execute.invalid = function(callback){
+    execute.onInvalid = function(callback){
       executable.hooks.invalid = callback;
       return execute;
     };
@@ -95,7 +95,7 @@ define([
       }
       return executable.result.result;
     };
-    execute.complete = function(callback){
+    execute.onComplete = function(callback){
       executable.hooks.complete = callback;
       return execute;
     };
