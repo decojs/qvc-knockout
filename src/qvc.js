@@ -77,7 +77,12 @@ define([
       return createExecutable(name, Executable.Query, parameters, hooks);
     },
     config: function(config){
-      utils.extend(qvc.config, config);
+      config = config || {};
+      for(var key in config){
+        if (config.hasOwnProperty(key)) {
+          qvc.config[key] = config[key];
+        }
+      }
     }
   }
 });
