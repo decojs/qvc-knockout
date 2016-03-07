@@ -47,7 +47,7 @@ define([
   function applyViolationMessageToField(parameters, fieldPath, executableName, message) {
     var object = findField(fieldPath, parameters, executableName, "Error applying violation");
 
-    if (typeof message === "string" && "validator" in object) {
+    if (typeof message === "string" && ko.isObservable(object) && "validator" in object) {
       object.validator.isValid(false);
       object.validator.message(message);
     }else{
@@ -55,11 +55,11 @@ define([
     }
   };
 
-  function applyViolationMessageToValidatable(validatable, message) {
-    validatable.validator.isValid(false);
-    var oldMessage = validatable.validator.message();
+  function applyViolationMessageToValidatable(validator, message) {
+    validator.isValid(false);
+    var oldMessage = validator.message();
     var newMessage = oldMessage.length == 0 ? message : oldMessage + ", " + message;
-    validatable.validator.message(newMessage);
+    validator.message(newMessage);
   };
 
   function applyValidatorTo(property, key, path, executableName){
@@ -107,12 +107,27 @@ define([
     }));
   };
 
+  function applyViolations(executableName, parameters, validator, violations){
+    violations.forEach(function(violation){
+      var message = violation.message;
+      var fieldName = violation.fieldName;
+      if (fieldName && fieldName.length > 0) {
+        //one of the fields violates a constraint
+        applyViolationMessageToField(parameters, fieldName, executableName, message);
+      } else {
+        //the validatable violates a constraint
+        applyViolationMessageToValidatable(validator, message);
+      }
+    });
+  };
+
   return {
     recursivelyExtendParameters: recursivelyExtendParameters,
     findField: findField,
     applyValidatorTo: applyValidatorTo,
     applyViolationMessageToField: applyViolationMessageToField,
     applyViolationMessageToValidatable: applyViolationMessageToValidatable,
-    applyConstraints: applyConstraints
+    applyConstraints: applyConstraints,
+    applyViolations: applyViolations
   };
 });

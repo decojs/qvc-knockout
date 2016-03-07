@@ -35,17 +35,7 @@ define([
   };
 
   Validatable.prototype.applyViolations = function(violations, executableName){
-    violations.forEach(function(violation){
-      var message = violation.message;
-      var fieldName = violation.fieldName;
-      if (fieldName && fieldName.length > 0) {
-        //one of the fields violates a constraint
-        validation.applyViolationMessageToField(this.validatableParameters, fieldName, executableName, message);
-      } else {
-        //the validatable violates a constraint
-        validation.applyViolationMessageToValidatable(this, message);
-      }
-    }.bind(this));
+    validation.applyViolations(executableName, this.validatableParameters, this.validator, violations);
   };
 
   Validatable.prototype.validate = function(){
