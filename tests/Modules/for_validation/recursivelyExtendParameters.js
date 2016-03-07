@@ -46,6 +46,10 @@ describe("recursivelyExtendParameters", [
     it("should set the right executable on the validator", function(){
       expect(this.ob.validator.executableName).toBe("SomeExecutable");
     });
+
+    it("should make it easy to see if the observable is valid", function(){
+      expect(this.ob.isValid).toBeA(Function);
+    });
   });
 
   describe("with nested fields inside an observable", function(){

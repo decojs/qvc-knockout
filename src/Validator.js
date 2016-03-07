@@ -1,8 +1,6 @@
 define([
-  "qvc/Constraint", 
   "knockout"
 ], function(
-  Constraint, 
   ko
 ){
 
@@ -15,36 +13,27 @@ define([
       return match;
     });
   }
-  
 
-  function Validator(target, options){
-    var self = this;
-    
+  function Validator(options){
     this.constraints = [];
-    
+
     this.isValid = ko.observable(true);
     this.message = ko.observable("");
 
     this.name = options && options.name;
     this.path = options && options.path;
     this.executableName = options && options.executableName;
-    
-    if(target && ko.isObservable(target)){
-      target.isValid = function(){return self.isValid();};
-    }
   }
-  
+
   Validator.prototype.setConstraints = function(constraints){
-    this.constraints = constraints.map(function(constraint){
-      return new Constraint(constraint.name, constraint.attributes);
-    });
+    this.constraints = constraints;
   };
-  
+
   Validator.prototype.reset = function(){
     this.isValid(true);
     this.message("");
   };
-  
+
   Validator.prototype.validate = function(value){
     if(this.constraints.length == 0){
       this.reset();
@@ -61,6 +50,6 @@ define([
       this.message("");
     }
   };
-  
+
   return Validator;
 });

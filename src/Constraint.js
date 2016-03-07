@@ -1,23 +1,9 @@
-define(["require"], function(require){
-  
-  function Constraint(type, attributes){    
+define(function(){
+  return function Constraint(type, attributes, Rule){
     this.type = type;
     this.attributes = attributes;
     this.message = attributes.message;
-    
-    this.init(type);
-  }
-  
-  Constraint.prototype.init = function(type){
-    require(["qvc/constraints/" + type], function(Tester){
-      var tester = new Tester(this.attributes);
-      this.validate = tester.isValid.bind(tester);
-    }.bind(this));
+    var rule = new Rule(attributes);
+    this.validate = rule.isValid.bind(rule);
   };
-  
-  Constraint.prototype.validate = function(value){
-    return true;//real test not loaded yet
-  };
-    
-  return Constraint;
 });

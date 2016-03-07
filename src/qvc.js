@@ -1,18 +1,22 @@
 define([
   "qvc/Executable",
   "qvc/ConstraintResolver",
+  "qvc/resolveRule",
   "knockout",
-  "qvc/koExtensions"],
-  function(
-    Executable,
-    ConstraintResolver,
-    ko){
+  "qvc/koExtensions"
+], function(
+  Executable,
+  ConstraintResolver,
+  resolveRule,
+  ko
+){
 
   function QVC(){
     this.config = {
       baseUrl: "/qvc",
       csrf: "",
-      cachekey: Date.now()
+      cachekey: Date.now(),
+      resolveRule: resolveRule
     };
 
     this.constraintResolver = new ConstraintResolver(this.config);

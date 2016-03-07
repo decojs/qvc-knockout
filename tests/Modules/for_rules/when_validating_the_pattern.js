@@ -1,4 +1,4 @@
-describe("when validating the Pattern constraint", ["qvc/constraints/Pattern"], function(Pattern){
+describe("when validating the Pattern rule", ["qvc/rules/Pattern"], function(Pattern){
 
 
   var constraint;
@@ -23,28 +23,28 @@ describe("when validating the Pattern constraint", ["qvc/constraints/Pattern"], 
       expect(constraint.isValid(null)).toBe(false);
     });
   });
-  
+
   describe("with an empty string", function(){
 
     it("should be invalid", function(){
       expect(constraint.isValid("")).toBe(false);
     });
   });
-  
+
   describe("with a string containing the regexp", function(){
 
     it("should be valid", function(){
       expect(constraint.isValid("this is something more")).toBe(false);
     });
   });
-  
+
   describe("with a string exactly like the regexp", function(){
 
     it("should be valid", function(){
       expect(constraint.isValid("something")).toBe(true);
     });
   });
-  
+
   describe("with an case insensitive flag", function(){
 
 

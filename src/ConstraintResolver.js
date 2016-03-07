@@ -8,7 +8,7 @@ define([
     this.constraints = Object.create(null);
   }
 
-  ConstraintResolver.prototype.applyValidationConstraints = function(name){
+  ConstraintResolver.prototype.resolveConstraints = function(name){
     if(name in this.constraints === false){
       this.constraints[name] = loadConstraints(name, this.config);
     }

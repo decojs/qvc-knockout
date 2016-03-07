@@ -1,23 +1,31 @@
-describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExtensions"], function(ko, Validatable){
+describe("when applying constraints", [
+  "knockout",
+  "qvc/validation",
+  "qvc/Constraint",
+  "Given/a_Rule",
+  "qvc/koExtensions"
+], function(
+  ko,
+  validation,
+  Constraint,
+  aRule
+){
 
-  var validatable,
-    parameters,
-    constraintRules,
-    setConstraintssSpy,
+  var constraintRules,
+    setConstraintSpy,
     constraintss;
 
   describe("to an validatable with one field", function(){
 
-    beforeEach(function(){
-      parameters = {
+    beforeEach(function(done){
+      var parameters = {
         name: ko.observable("deco")
       }
-      validatable = new Validatable("SomeExecutable",parameters);
 
-      setConstraintssSpy = sinon.spy();
+      setConstraintSpy = sinon.spy();
 
       parameters.name.validator = {
-        setConstraints: setConstraintssSpy
+        setConstraints: setConstraintSpy
       };
 
       constraints = [{name: "NotEmpty", attributes:{}}];
@@ -29,38 +37,33 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
         }
       ];
 
-      validatable.applyConstraints("SomeExecutable", constraintRules);
+      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
-      expect(setConstraintssSpy.called).toBe(true);
-      expect(setConstraintssSpy.callCount).toBe(1);
-    });
-
-    it("should set the correct constraint", function(){
-      expect(setConstraintssSpy.getCall(0).args[0]).toBe(constraints);
+      expect(setConstraintSpy.called).toBe(true);
+      expect(setConstraintSpy.callCount).toBe(1);
     });
   });
 
 
   describe("to an validatable with nested fields", function(){
 
-    beforeEach(function(){
-      parameters = {
+    beforeEach(function(done){
+      var parameters = {
         address: {
           street: ko.observable("street")
         },
         name: ko.observable("name")
       };
-      validatable = new Validatable("SomeExecutable",parameters);
 
-      setConstraintssSpy = sinon.spy();
+      setConstraintSpy = sinon.spy();
 
       parameters.name.validator = {
-        setConstraints: setConstraintssSpy
+        setConstraints: setConstraintSpy
       };
       parameters.address.street.validator = {
-        setConstraints: setConstraintssSpy
+        setConstraints: setConstraintSpy
       };
 
       constraints = [{name: "NotEmpty", attributes:{}}];
@@ -75,38 +78,33 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
         }
       ];
 
-      validatable.applyConstraints("SomeExecutable", constraintRules);
+      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
-      expect(setConstraintssSpy.called).toBe(true);
-      expect(setConstraintssSpy.callCount).toBe(2);
-    });
-
-    it("should set the correct constraint", function(){
-      expect(setConstraintssSpy.getCall(0).args[0]).toBe(constraints);
+      expect(setConstraintSpy.called).toBe(true);
+      expect(setConstraintSpy.callCount).toBe(2);
     });
   });
 
 
   describe("to an validatable with nested fields inside observables", function(){
 
-    beforeEach(function(){
-      parameters = {
+    beforeEach(function(done){
+      var parameters = {
         address: ko.observable({
           street: ko.observable("street")
         }),
         name: ko.observable("name")
       };
-      validatable = new Validatable("SomeExecutable",parameters);
 
-      setConstraintssSpy = sinon.spy();
+      setConstraintSpy = sinon.spy();
 
       parameters.name.validator = {
-        setConstraints: setConstraintssSpy
+        setConstraints: setConstraintSpy
       };
       parameters.address().street.validator = {
-        setConstraints: setConstraintssSpy
+        setConstraints: setConstraintSpy
       };
 
       constraints = [{name: "NotEmpty", attributes:{}}];
@@ -121,16 +119,12 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
         }
       ];
 
-      validatable.applyConstraints("SomeExecutable", constraintRules);
+      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
-      expect(setConstraintssSpy.called).toBe(true);
-      expect(setConstraintssSpy.callCount).toBe(2);
-    });
-
-    it("should set the correct constraint", function(){
-      expect(setConstraintssSpy.getCall(0).args[0]).toBe(constraints);
+      expect(setConstraintSpy.called).toBe(true);
+      expect(setConstraintSpy.callCount).toBe(2);
     });
   });
 
@@ -141,7 +135,6 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
       parameters = {
         name: ko.observable("name")
       };
-      validatable = new Validatable("SomeExecutable", parameters);
 
       parameters.name.validator = {
         setConstraints: function(){}
@@ -159,7 +152,7 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
 
     it("to trow an exception", function(){
       expect(function(){
-        validatable.applyConstraints("SomeExecutable", constraintRules);
+        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).toThrow(new Error("Error applying constraints to field: address\naddress is not a member of SomeExecutable\nSomeExecutable = `{\"name\":\"name\"}`"));
     });
   });
@@ -170,7 +163,6 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
       parameters = {
         name: "name"
       };
-      validatable = new Validatable("SomeExecutable",parameters);
 
       constraints = [{name: "NotEmpty", attributes:{}}];
       constraintRules = [
@@ -184,7 +176,7 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
 
     it("to trow an exception", function(){
       expect(function(){
-        validatable.applyConstraints("SomeExecutable", constraintRules);
+        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).toThrow(new Error("Error applying constraints to field: name\nIt is not an observable or is not extended with a validator. \nname=`\"name\"`"));
     });
   });
@@ -195,7 +187,6 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
       parameters = {
         name: "name"
       };
-      validatable = new Validatable("SomeExecutable",parameters);
 
       constraints = [];
       constraintRules = [
@@ -209,7 +200,7 @@ describe("when applying constraints", ["knockout", "qvc/Validatable", "qvc/koExt
 
     it("to trow an exception", function(){
       expect(function(){
-        validatable.applyConstraints("SomeExecutable", constraintRules);
+        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).not.toThrow();
     });
   });

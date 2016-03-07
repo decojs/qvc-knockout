@@ -28,7 +28,7 @@ describe("when applying a validation constraint", {
     beforeEach(function(){
 
       because: {
-        result = cr.applyValidationConstraints("name");
+        result = cr.resolveConstraints("name");
       }
     });
 
@@ -47,9 +47,9 @@ describe("when applying a validation constraint", {
     beforeEach(function(done){
 
       because: {
-        result1 = cr.applyValidationConstraints("name");
+        result1 = cr.resolveConstraints("name");
         result2 = result1.then(function(){
-          cr.applyValidationConstraints("name");
+          cr.resolveConstraints("name");
         }).then(done);
       }
 
@@ -69,10 +69,10 @@ describe("when applying a validation constraint", {
     var result1, result2;
 
     beforeEach(function(){
-      result1 = cr.applyValidationConstraints("name");
+      result1 = cr.resolveConstraints("name");
 
       because: {
-        result2 = cr.applyValidationConstraints("name");
+        result2 = cr.resolveConstraints("name");
       }
     });
 

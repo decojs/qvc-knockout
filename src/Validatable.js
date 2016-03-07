@@ -6,21 +6,25 @@ define([
 ], function(
   validation,
   Validator,
+  Constraint,
   ko
 ){
 
-  function Validatable(name, parameters, constraintResolver){
+  function Validatable(name, parameters, constraintResolver, resolveRule){
     var self = this;
 
     this.validator = new Validator();
     this.validatableFields = [];
     this.validatableParameters = parameters;
 
-
     init: {
-      this.validatableFields = validation.recursivelyExtendParameters(self.validatableParameters, name);
-      if(constraintResolver)
-        constraintResolver.applyValidationConstraints(name).then(self.applyConstraints.bind(this, name));
+      this.validatableFields = validation.recursivelyExtendParameters(parameters, name);
+      if(constraintResolver){
+        constraintResolver.resolveConstraints(name)
+          .then(function(constraints){
+            validation.applyConstraints(name, parameters, constraints, resolveRule);
+          });
+      }
     }
   }
 
@@ -42,28 +46,6 @@ define([
         validation.applyViolationMessageToValidatable(this, message);
       }
     }.bind(this));
-  };
-
-  Validatable.prototype.applyConstraints = function(executableName, fields){
-    var parameters = this.validatableParameters;
-
-    fields.forEach(function(field){
-      var fieldName = field.name;
-      var constraints = field.constraints;
-
-      if(constraints == null || constraints.length == 0)
-        return;
-
-      var object = validation.findField(fieldName, parameters, executableName, "Error applying constraints to field");
-
-      if (ko.isObservable(object) && "validator" in object) {
-        object.validator.setConstraints(constraints);
-      } else {
-        throw new Error("Error applying constraints to field: " + fieldName + "\n" +
-          "It is not an observable or is not extended with a validator. \n" +
-          fieldName + "=`" + ko.toJSON(object) + "`");
-      }
-    });
   };
 
   Validatable.prototype.validate = function(){

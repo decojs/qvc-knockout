@@ -1,4 +1,4 @@
-describe("when validating the NotEmpty constraint", ["qvc/constraints/NotEmpty"], function(NotEmpty){
+describe("when validating the NotEmpty rule", ["qvc/rules/NotEmpty"], function(NotEmpty){
 
   var constraint;
   beforeEach(function(){
@@ -22,21 +22,21 @@ describe("when validating the NotEmpty constraint", ["qvc/constraints/NotEmpty"]
       expect(constraint.isValid(null)).toBe(false);
     });
   });
-  
+
   describe("with an empty string", function(){
 
     it("should be invalid", function(){
       expect(constraint.isValid("")).toBe(false);
     });
   });
-  
+
   describe("with a number", function(){
 
     it("should be valid", function(){
       expect(constraint.isValid(0)).toBe(true);
     });
   });
-  
+
   describe("with a string", function(){
 
     it("should be valid", function(){

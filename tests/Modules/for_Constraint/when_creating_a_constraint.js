@@ -1,16 +1,16 @@
-describe("with an case insensitive flag", ["qvc/Constraint"], function(Constraint){
+describe("when creating a constraint", ["qvc/Constraint"], function(Constraint){
 
   var constraint,
     attributes;
   beforeEach(function(){
 
-    attributes = {message: "hello", regexp: "something", flags:["CASE_INSENSITIVE"]};
+    attributes = {message: "hello"};
 
-    constraint = new Constraint("Pattern", attributes);
+    constraint = new Constraint("Dummy", attributes, function(){this.isValid = function(){return true;}});
   });
 
   it("should have a name", function(){
-    expect(constraint.type).toBe("Pattern");
+    expect(constraint.type).toBe("Dummy");
   });
 
   it("should have a message", function(){

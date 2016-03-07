@@ -1,17 +1,10 @@
-define([], function(){
-  
+define(['qvc/Constraint'], function(Constraint){
   return {
     whichIsInvalid: function(type, message, attributes){
-      return {
-        validate: sinon.stub().returns(false), 
-        type: type || "dummy",
-        attributes: attributes || {
-
-        },
-        message: message || "invalid"
-      }
+      attributes = attributes || {};
+      message = message || "invalid";
+      attributes.message = message;
+      return new Constraint(type || "dummy", attributes, function(){this.isValid = sinon.stub().returns(false)});
     }
-
   }
-
 });
