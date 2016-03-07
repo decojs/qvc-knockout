@@ -7,7 +7,7 @@
     "email": "npm@mariusgundersen.net",
     "url": "http://mariusgundersen.net"
   },
-  "version": "0.2.1",
+  "version": "0.3.0",
   "devDependencies": {
     "gulp": "^3.9.1",
     "jasmine": "^2.4.1",
