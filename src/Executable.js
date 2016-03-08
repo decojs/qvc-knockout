@@ -12,7 +12,7 @@ define([
   ko){
 
   function Executable(name, type, parameters, hooks, qvc){
-    Validatable.call(this, name, parameters, qvc.constraintResolver, qvc.resolveRule)
+    Validatable.call(this, name, parameters, qvc.constraintResolver, qvc.config.resolveRule)
 
     this.name = name;
     this.type = type;
