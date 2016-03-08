@@ -93,7 +93,7 @@ define([
 
       if (ko.isObservable(object) && "validator" in object) {
         return Promise.all(constraints.map(function(constraint){
-          return resolveRule(constraint.type).then(function(Rule){
+          return resolveRule(constraint.name).then(function(Rule){
             return new Constraint(constraint.name, constraint.attributes, Rule);
           });
         })).then(function(constraints){
