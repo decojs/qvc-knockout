@@ -8,7 +8,8 @@
   ],
   "main": "dist/qvc.js",
   "ignore": [
-    "!src/**/*.js"
+    "/*",
+    "!/src"
   ],
   "dependencies": {
     "requirejs": "~2.1.11",
