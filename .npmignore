@@ -1,0 +1,7 @@
+/tests
+/bower_components
+/node_modules
+bower.json
+Gulpfile.js
+karma.conf.js
+/.*
