@@ -1,12 +1,14 @@
 define([
   "qvc/ExecutableResult",
   "qvc/validation/Validatable",
+  "qvc/validation/applyViolations",
   "qvc/utils/inheritsFrom",
   "qvc/execute",
   "knockout"
 ], function(
   ExecutableResult,
   Validatable,
+  applyViolations,
   inheritsFrom,
   execute,
   ko){
@@ -58,6 +60,7 @@ define([
 
     execute(this.type, this.name, this.parameters, this.qvc.config)
     .then(function(result){
+      console.log
       if (result.success === true) {
         this.hasError(false);
         this.clearValidationMessages();
@@ -66,7 +69,7 @@ define([
           this.hooks.result(result.result);
         }
       } else if(result.valid !== true) {
-        this.applyViolations(result.violations || [], this.name);
+        applyViolations(this.name, this.validatableParameters, this.validator, result.violations || []);
         this.hooks.invalid();
       }else{
         this.hasError(true);
@@ -79,7 +82,8 @@ define([
     .then(function(){
       this.hooks.complete();
       this.isBusy(false);
-    }.bind(this), function(){
+    }.bind(this), function(e){
+      console.error(e.message, e.stack);
       this.hooks.complete();
       this.isBusy(false);
     }.bind(this));

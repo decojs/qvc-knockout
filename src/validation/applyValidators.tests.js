@@ -1,8 +1,8 @@
-describe("recursivelyExtendParameters", [
-  "qvc/validation/validation",
+describe("applyValidators", [
+  "qvc/validation/applyValidators",
   "knockout"
 ], function (
-  validation,
+  applyValidators,
   ko
 ) {
   describe("with non-observables", function(){
@@ -13,7 +13,7 @@ describe("recursivelyExtendParameters", [
     });
 
     it("should return an empty list", function(){
-      expect(validation.recursivelyExtendParameters(this.parameters, 'SomeExecutable')).toEqual([]);
+      expect(applyValidators(this.parameters, 'SomeExecutable')).toEqual([]);
     });
 
     it("should not extend the value", function(){
@@ -24,7 +24,7 @@ describe("recursivelyExtendParameters", [
   describe("of observable", function(){
     beforeEach(function(){
       this.ob = ko.observable('test');
-      this.result = validation.recursivelyExtendParameters({obs: this.ob}, 'SomeExecutable');
+      this.result = applyValidators({obs: this.ob}, 'SomeExecutable');
     });
 
     it("should include the observable in the list", function(){
@@ -62,7 +62,7 @@ describe("recursivelyExtendParameters", [
         }),
         name: ko.observable("name")
       };
-      this.result = validation.recursivelyExtendParameters(this.parameters, "SomeExecutable");
+      this.result = applyValidators(this.parameters, "SomeExecutable");
 
     });
 
@@ -100,7 +100,7 @@ describe("recursivelyExtendParameters", [
         },
         name: ko.observable("name")
       };
-      this.result = validation.recursivelyExtendParameters(this.parameters, "SomeExecutable");
+      this.result = applyValidators(this.parameters, "SomeExecutable");
 
     });
 

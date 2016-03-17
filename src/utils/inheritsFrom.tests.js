@@ -1,4 +1,4 @@
-describe("when calling inheritsFrom", [
+describe("inheritsFrom", [
   "qvc/utils/inheritsFrom"
 ], function(
   inheritsFrom

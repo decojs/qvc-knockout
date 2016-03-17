@@ -1,4 +1,10 @@
-define([], function(){
+define([
+  "qvc/utils/addParamToUrl",
+  "qvc/utils/addToPath"
+], function(
+  addParamToUrl,
+  addToPath
+){
   function dataToParams(data){
     var params = []
     for(var key in data){
@@ -8,21 +14,9 @@ define([], function(){
     return params.join("&");
   }
 
-  function addParamToUrl(url, name, value){
-    return url + (url.match(/\?/) ? (url.match(/&$/) ? "" : "&") : "?") + encodeURIComponent(name) + "=" + encodeURIComponent(value);
-  }
-
   function addParamsToUrl(url, data){
     var params = dataToParams(data);
     return url + (url.match(/\?/) ? (url.match(/&$/) ? "" : (params.length > 0 ? "&" : "")) : "?") + params;
-  }
-
-  function addToPath(url, segment){
-    for(var i=1; i<arguments.length; i++){
-      segment = arguments[i];
-      url = url + (url[url.length-1] == '/' ? "" : "/") + segment;
-    }
-    return url;
   }
 
   function cacheBust(url){

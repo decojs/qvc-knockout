@@ -1,7 +1,14 @@
-describe("when applying violations", {
+describe("applyViolations", {
   "qvc/validation/Validator": "Mocks/ValidatorMock"
-},["knockout", "qvc/validation/validation", "qvc/validation/Validator"], function(ko, validation, Validator){
-
+}, [
+  "knockout",
+  "qvc/validation/applyViolations",
+  "qvc/validation/Validator"
+], function(
+  ko,
+  applyViolations,
+  Validator
+){
   describe("to an validatable with one field", function(){
 
     beforeEach(function(){
@@ -20,7 +27,7 @@ describe("when applying violations", {
         }
       ];
 
-      validation.applyViolations("SomeExecutable", parameters, null, violations);
+      applyViolations("SomeExecutable", parameters, null, violations);
     });
 
     it("should set isValid to false", function(){
@@ -53,7 +60,7 @@ describe("when applying violations", {
         }
       ];
 
-      validation.applyViolations("SomeExecutable", parameters, null, violations);
+      applyViolations("SomeExecutable", parameters, null, violations);
     });
 
     it("should set isValid to false", function(){
@@ -86,7 +93,7 @@ describe("when applying violations", {
         }
       ];
 
-      validation.applyViolations("SomeExecutable", parameters, null, violations);
+      applyViolations("SomeExecutable", parameters, null, violations);
     });
 
     it("should set isValid to false", function(){
@@ -115,7 +122,7 @@ describe("when applying violations", {
       ];
 
       expect(function(){
-        validation.applyViolations("SomeExecutable", parameters, null, violations);
+        applyViolations("SomeExecutable", parameters, null, violations);
       }).toThrow(new Error("Error applying violation: address\naddress is not a member of SomeExecutable\nSomeExecutable = `{\"name\":\"Test Testerson\"}`"));
     });
   });
@@ -135,7 +142,7 @@ describe("when applying violations", {
       ];
 
       expect(function(){
-        validation.applyViolations("SomeExecutable", parameters, null, violations);
+        applyViolations("SomeExecutable", parameters, null, violations);
       }).toThrow(new Error("Error applying violation\nname is not validatable\nit should be an observable"));
     });
   });
@@ -154,7 +161,7 @@ describe("when applying violations", {
         }
       ];
 
-      validation.applyViolations("SomeExecutable", parameters, this.validator, violations);
+      applyViolations("SomeExecutable", parameters, this.validator, violations);
 
     });
 

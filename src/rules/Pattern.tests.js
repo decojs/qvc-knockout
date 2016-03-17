@@ -1,4 +1,8 @@
-describe("when validating the Pattern rule", ["qvc/rules/Pattern"], function(Pattern){
+describe("Pattern", [
+  "qvc/rules/Pattern"
+], function(
+  Pattern
+){
 
 
   var constraint;

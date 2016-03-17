@@ -5,3 +5,4 @@ bower.json
 Gulpfile.js
 karma.conf.js
 /.*
+/src/**/*.tests.js

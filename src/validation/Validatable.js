@@ -1,12 +1,16 @@
 define([
-  "qvc/validation/validation",
+  "qvc/validation/applyValidators",
   "qvc/validation/Validator",
+  "qvc/constraints/applyConstraints",
+  "qvc/validation/applyViolations",
   "knockout",
   "qvc/koExtensions"
 ], function(
-  validation,
+  applyValidators,
   Validator,
   Constraint,
+  applyConstraints,
+  applyViolations,
   ko
 ){
 
@@ -18,11 +22,11 @@ define([
     this.validatableParameters = parameters;
 
     init: {
-      this.validatableFields = validation.recursivelyExtendParameters(parameters, name);
+      this.validatableFields = applyValidators(parameters, name);
       if(constraintResolver){
         constraintResolver.resolveConstraints(name)
           .then(function(constraints){
-            validation.applyConstraints(name, parameters, constraints, resolveRule);
+            applyConstraints(name, parameters, constraints, resolveRule);
           });
       }
     }
@@ -32,10 +36,6 @@ define([
     return this.validatableFields.every(function(constraint){
       return constraint.validator && constraint.validator.isValid();
     }) && this.validator.isValid();
-  };
-
-  Validatable.prototype.applyViolations = function(violations, executableName){
-    validation.applyViolations(executableName, this.validatableParameters, this.validator, violations);
   };
 
   Validatable.prototype.validate = function(){

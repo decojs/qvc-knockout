@@ -1,4 +1,8 @@
-describe("when validating the NotEmpty rule", ["qvc/rules/NotEmpty"], function(NotEmpty){
+describe("NotEmpty", [
+  "qvc/rules/NotEmpty"
+], function(
+  NotEmpty
+){
 
   var constraint;
   beforeEach(function(){

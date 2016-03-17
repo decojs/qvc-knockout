@@ -1,12 +1,12 @@
-describe("when applying constraints", [
+describe("applyConstraints", [
   "knockout",
-  "qvc/validation/validation",
+  "qvc/constraints/applyConstraints",
   "qvc/constraints/Constraint",
   "Given/a_Rule",
   "qvc/koExtensions"
 ], function(
   ko,
-  validation,
+  applyConstraints,
   Constraint,
   aRule
 ){
@@ -37,7 +37,7 @@ describe("when applying constraints", [
         }
       ];
 
-      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
+      applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
@@ -78,7 +78,7 @@ describe("when applying constraints", [
         }
       ];
 
-      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
+      applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
@@ -119,7 +119,7 @@ describe("when applying constraints", [
         }
       ];
 
-      validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
+      applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised).then(done, done.fail);
     });
 
     it("should set the constraintss of the field", function(){
@@ -152,7 +152,7 @@ describe("when applying constraints", [
 
     it("to trow an exception", function(){
       expect(function(){
-        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
+        applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).toThrow(new Error("Error applying constraints to field: address\naddress is not a member of SomeExecutable\nSomeExecutable = `{\"name\":\"name\"}`"));
     });
   });
@@ -176,7 +176,7 @@ describe("when applying constraints", [
 
     it("to trow an exception", function(){
       expect(function(){
-        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
+        applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).toThrow(new Error("Error applying constraints to field: name\nIt is not an observable or is not extended with a validator. \nname=`\"name\"`"));
     });
   });
@@ -200,7 +200,7 @@ describe("when applying constraints", [
 
     it("to trow an exception", function(){
       expect(function(){
-        validation.applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
+        applyConstraints("SomeExecutable", parameters, constraintRules, aRule.asPromised);
       }).not.toThrow();
     });
   });

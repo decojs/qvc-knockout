@@ -1,4 +1,4 @@
-describe("when applying a validation constraint", {
+describe("ConstraintResolver", {
   'qvc/constraints/loadConstraints': function(){
     return sinon.stub().returns(Promise.resolve([]))
   }

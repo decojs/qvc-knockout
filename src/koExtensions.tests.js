@@ -1,6 +1,6 @@
-describe("when extending knockout", {
+describe("koExtensions", {
   'knockout':function(){
-    return { 
+    return {
       bindingHandlers: {},
       extenders: {}
     }

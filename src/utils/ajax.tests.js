@@ -1,4 +1,4 @@
-describe("when making a request", [
+describe("ajax", [
   "qvc/utils/ajax"
 ], function(
   ajax
@@ -6,7 +6,6 @@ describe("when making a request", [
 
   var xhr,
     request;
-
 
   beforeEach(function(){
     xhr = sinon.useFakeXMLHttpRequest();
