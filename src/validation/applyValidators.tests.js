@@ -126,4 +126,19 @@ describe("applyValidators", [
       expect(this.parameters.address.street.validator.executableName).toBe("SomeExecutable");
     });
   });
+
+  describe("to the same observable twice", function(){
+    beforeEach(function(){
+      this.parameters = {
+        name: ko.observable("deco")
+      }
+      applyValidators(this.parameters, "FirstCommand");
+    });
+
+    it("should throw an exception", function(){
+      expect(function(){
+        applyValidators(this.parameters, "SecondCommand");
+      }.bind(this)).toThrow(new Error("Observable `name` is parameter `name` in FirstCommand and therefore cannot be a parameter in SecondCommand!"));
+    });
+  });
 });

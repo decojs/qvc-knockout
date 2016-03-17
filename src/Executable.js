@@ -1,27 +1,29 @@
 define([
   "qvc/ExecutableResult",
-  "qvc/validation/Validatable",
+  "qvc/validation/Validator",
+  "qvc/validation/applyValidators",
+  "qvc/constraints/applyConstraints",
   "qvc/validation/applyViolations",
-  "qvc/utils/inheritsFrom",
   "qvc/execute",
   "knockout"
 ], function(
   ExecutableResult,
-  Validatable,
+  Validator,
+  applyValidators,
+  applyConstraints,
   applyViolations,
-  inheritsFrom,
   execute,
-  ko){
+  ko
+){
 
   function Executable(name, type, parameters, hooks, qvc){
-    Validatable.call(this, name, parameters, qvc.constraintResolver, qvc.config.resolveRule)
-
     this.name = name;
     this.type = type;
     this.qvc = qvc;
     this.isBusy = ko.observable(false);
     this.hasError = ko.observable(false);
-
+    this.validator = new Validator();
+    this.validatableFields = applyValidators(parameters, name);
     this.parameters = Object.seal(parameters);
 
     hooks = hooks || {};
@@ -34,9 +36,14 @@ define([
       complete: hooks.complete || function () {},
       invalid: hooks.invalid || function() {}
     };
-  }
 
-  Executable.prototype = inheritsFrom(Validatable);
+    if(qvc.constraintResolver){
+      qvc.constraintResolver.resolveConstraints(name)
+        .then(function(constraints){
+          applyConstraints(name, parameters, constraints, qvc.config.resolveRule);
+        });
+    }
+  }
 
   Executable.prototype.execute = function () {
     if (this.isBusy()) {
@@ -69,7 +76,7 @@ define([
           this.hooks.result(result.result);
         }
       } else if(result.valid !== true) {
-        applyViolations(this.name, this.validatableParameters, this.validator, result.violations || []);
+        applyViolations(this.name, this.parameters, this.validator, result.violations || []);
         this.hooks.invalid();
       }else{
         this.hasError(true);
@@ -88,6 +95,34 @@ define([
       this.isBusy(false);
     }.bind(this));
     return false;
+  };
+
+  Executable.prototype.isValid = function () {
+    return this.validatableFields.every(function(constraint){
+      return constraint.validator && constraint.validator.isValid();
+    }) && this.validator.isValid();
+  };
+
+  Executable.prototype.validate = function(){
+    this.validator.validate(true);
+    if (this.validator.isValid()) {
+      this.validatableFields.forEach(function(constraint){
+        var validator = constraint.validator;
+        if (validator) {
+          validator.validate(constraint());
+        }
+      });
+    }
+  };
+
+  Executable.prototype.clearValidationMessages = function () {
+    this.validator.reset();
+    this.validatableFields.forEach(function(constraint){
+      var validator = constraint.validator;
+      if (validator) {
+        validator.reset();
+      }
+    });
   };
 
   Executable.Command = "command";
