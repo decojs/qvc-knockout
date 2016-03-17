@@ -1,13 +1,13 @@
 define([
   "qvc/ExecutableResult",
-  "qvc/Validatable",
-  "qvc/utils",
+  "qvc/validation/Validatable",
+  "qvc/utils/inheritsFrom",
   "qvc/execute",
   "knockout"
 ], function(
   ExecutableResult,
   Validatable,
-  utils,
+  inheritsFrom,
   execute,
   ko){
 
@@ -34,7 +34,7 @@ define([
     };
   }
 
-  Executable.prototype = utils.inheritsFrom(Validatable);
+  Executable.prototype = inheritsFrom(Validatable);
 
   Executable.prototype.execute = function () {
     if (this.isBusy()) {

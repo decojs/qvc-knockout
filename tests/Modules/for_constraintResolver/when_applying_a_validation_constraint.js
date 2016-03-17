@@ -1,10 +1,10 @@
 describe("when applying a validation constraint", {
-  'qvc/loadConstraints': function(){
+  'qvc/constraints/loadConstraints': function(){
     return sinon.stub().returns(Promise.resolve([]))
   }
 }, [
-  "qvc/ConstraintResolver",
-  "qvc/loadConstraints"
+  "qvc/constraints/ConstraintResolver",
+  "qvc/constraints/loadConstraints"
 ], function(
   ConstraintResolver,
   loadSpy

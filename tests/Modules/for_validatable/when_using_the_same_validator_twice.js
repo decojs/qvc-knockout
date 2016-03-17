@@ -1,10 +1,10 @@
-describe("when using the same validator twice", ["knockout", "qvc/Validatable", "qvc/koExtensions"], function(ko, Validatable){
+describe("when using the same validator twice", ["knockout", "qvc/validation/Validatable", "qvc/koExtensions"], function(ko, Validatable){
 
   var validatable,
     parameters;
-  
+
   beforeEach(function(){
-      
+
     parameters = {
       name: ko.observable("deco")
     }
@@ -12,7 +12,7 @@ describe("when using the same validator twice", ["knockout", "qvc/Validatable", 
     validatable = new Validatable("FirstCommand",parameters);
 
   });
-  
+
   it("should throw an exception", function(){
     expect(function(){
       new Validatable("SecondCommand", parameters);

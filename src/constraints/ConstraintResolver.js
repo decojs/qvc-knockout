@@ -1,5 +1,5 @@
 define([
-  'qvc/loadConstraints'
+  'qvc/constraints/loadConstraints'
 ], function(
   loadConstraints
 ){

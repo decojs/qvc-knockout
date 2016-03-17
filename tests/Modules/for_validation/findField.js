@@ -1,5 +1,5 @@
 describe("findField", [
-  "qvc/validation",
+  "qvc/validation/validation",
   "knockout"
 ], function(
   validation,

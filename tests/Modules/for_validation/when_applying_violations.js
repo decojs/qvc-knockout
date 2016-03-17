@@ -1,6 +1,6 @@
 describe("when applying violations", {
-  "qvc/Validator": "Mocks/ValidatorMock"
-},["knockout", "qvc/validation", "qvc/Validator"], function(ko, validation, Validator){
+  "qvc/validation/Validator": "Mocks/ValidatorMock"
+},["knockout", "qvc/validation/validation", "qvc/validation/Validator"], function(ko, validation, Validator){
 
   describe("to an validatable with one field", function(){
 

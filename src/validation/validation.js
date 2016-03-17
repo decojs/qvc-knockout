@@ -1,6 +1,6 @@
 define([
-  "qvc/Validator",
-  "qvc/Constraint",
+  "qvc/validation/Validator",
+  "qvc/constraints/Constraint",
   "knockout"
 ], function(
   Validator,

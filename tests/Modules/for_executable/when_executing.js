@@ -1,6 +1,6 @@
 describe("when executing", {
-  "qvc/ajax":"Mocks/ajaxMock"
-},["qvc", "qvc/ajax", "knockout", "Given/deferred"], function(qvc, ajaxMock, ko, deferred){
+  "qvc/utils/ajax":"Mocks/ajaxMock"
+},["qvc", "qvc/utils/ajax", "knockout", "Given/deferred"], function(qvc, ajaxMock, ko, deferred){
 
   var executable,
     beforeExecute,

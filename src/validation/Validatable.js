@@ -1,6 +1,6 @@
 define([
-  "qvc/validation",
-  "qvc/Validator",
+  "qvc/validation/validation",
+  "qvc/validation/Validator",
   "knockout",
   "qvc/koExtensions"
 ], function(

@@ -1,7 +1,7 @@
 describe("when applying constraints", [
   "knockout",
-  "qvc/validation",
-  "qvc/Constraint",
+  "qvc/validation/validation",
+  "qvc/constraints/Constraint",
   "Given/a_Rule",
   "qvc/koExtensions"
 ], function(

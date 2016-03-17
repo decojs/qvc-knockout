@@ -1,5 +1,5 @@
 define([
-  'qvc/ajax'
+  'qvc/utils/ajax'
 ], function(
   ajax
 ){

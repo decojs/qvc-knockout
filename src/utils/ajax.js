@@ -71,6 +71,7 @@ define([], function(){
     promise.abort = xhr.abort;
     return promise;
   };
+
   ajax.addParamToUrl = addParamToUrl;
   ajax.addParamsToUrl = addParamsToUrl;
   ajax.addToPath = addToPath;

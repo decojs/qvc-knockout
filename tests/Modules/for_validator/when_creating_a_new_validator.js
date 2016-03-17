@@ -1,6 +1,6 @@
 describe("when creating a new validator", {
-  "qvc/Constraint": "Mocks/ConstraintMock"
-},["knockout", "qvc/Validator"], function(ko, Validator){
+  "qvc/constraints/Constraint": "Mocks/ConstraintMock"
+},["knockout", "qvc/validation/Validator"], function(ko, Validator){
 
   var observable,
     validator;

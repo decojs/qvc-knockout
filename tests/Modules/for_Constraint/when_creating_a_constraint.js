@@ -1,4 +1,4 @@
-describe("when creating a constraint", ["qvc/Constraint"], function(Constraint){
+describe("when creating a constraint", ["qvc/constraints/Constraint"], function(Constraint){
 
   var constraint,
     attributes;

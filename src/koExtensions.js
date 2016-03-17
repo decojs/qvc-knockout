@@ -1,4 +1,4 @@
-define(["qvc/Validator", "knockout"], function(Validator, ko){
+define(["qvc/validation/Validator", "knockout"], function(Validator, ko){
 
   if (ko != null) {
     ko.bindingHandlers.validationMessageFor = {
@@ -13,13 +13,13 @@ define(["qvc/Validator", "knockout"], function(Validator, ko){
         }
       }
     };
-    
+
     ko.bindingHandlers.command = ko.bindingHandlers.query = {
       init: function (element, valueAccessor, allBindingAccessor, viewModel) {
         ko.applyBindingsToNode(element, { click: valueAccessor() }, viewModel);
       }
     };
   }
-  
+
 
 });

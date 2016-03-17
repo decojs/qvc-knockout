@@ -1,4 +1,4 @@
-define(['qvc/Constraint'], function(Constraint){
+define(['qvc/constraints/Constraint'], function(Constraint){
   return {
     whichIsInvalid: function(type, message, attributes){
       attributes = attributes || {};

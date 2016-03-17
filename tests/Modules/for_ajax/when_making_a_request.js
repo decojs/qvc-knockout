@@ -1,5 +1,5 @@
 describe("when making a request", [
-  "qvc/ajax"
+  "qvc/utils/ajax"
 ], function(
   ajax
 ){

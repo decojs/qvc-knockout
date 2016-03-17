@@ -1,6 +1,6 @@
 define([
   'knockout',
-  'qvc/ajax',
+  'qvc/utils/ajax',
   'qvc/ExecutableResult'
 ], function(
   ko,

@@ -1,7 +1,7 @@
 define([
   "qvc/Executable",
-  "qvc/ConstraintResolver",
-  "qvc/resolveRule",
+  "qvc/constraints/ConstraintResolver",
+  "qvc/constraints/resolveRule",
   "knockout",
   "qvc/koExtensions"
 ], function(

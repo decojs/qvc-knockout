@@ -1,6 +1,6 @@
 describe("when creating an executable", {
-  "qvc/ajax":"Mocks/ajaxMock"
-},["qvc", "qvc/ajax", "knockout"], function(qvc, ajaxMock, ko){
+  "qvc/utils/ajax":"Mocks/ajaxMock"
+},["qvc", "qvc/utils/ajax", "knockout"], function(qvc, ajaxMock, ko){
 
   var executable,
     parameters;
