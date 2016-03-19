@@ -1,17 +1,21 @@
 define([
   "qvc/executable/makeHooks",
   "qvc/executable/makeChaining",
-  "qvc/executable/execute",
+  "qvc/executable/executeMethods",
+  "qvc/executable/executeOnServer",
   "qvc/validation/applyValidators",
   "qvc/constraints/applyConstraints",
+  "qvc/validation/applyViolations",
   "qvc/validation/Validator",
   "knockout"
 ], function(
   makeHooks,
   makeChaining,
-  executeMethod,
+  executeMethods,
+  executeOnServer,
   applyValidators,
   applyConstraints,
+  applyViolations,
   Validator,
   ko
 ){
@@ -19,7 +23,31 @@ define([
     var executable = Object.create(null);
     var hooks = makeHooks(hooks);
     var execute = function(){
-      executeMethod.call(executable, type, name, hooks, qvc);
+      if(!executeMethods.canExecute(hooks, executable)){
+        return false;
+      }
+
+      executable.isBusy(true);
+
+      executeMethods.doExecute(function(){
+        return executeOnServer(type, name, parameters, qvc.config);
+      }, function onSuccess(result){
+        executable.hasError(false);
+        executable.clearValidationMessages();
+        hooks.onSuccess();
+        if(type === 'query'){
+          hooks.result(result);
+        }
+      }, function onInvalid(violations){
+        applyViolations(name, parameters, executable.validator, violations || []);
+        hooks.onInvalid();
+      }, function onError(error){
+        executable.hasError(true);
+        hooks.onError(error);
+      }, function onFinally(){
+        hooks.onComplete();
+        executable.isBusy(false);
+      });
       return false;
     };
 
