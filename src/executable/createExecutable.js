@@ -1,10 +1,12 @@
 define([
+  "qvc/executable/makeHooks",
   "qvc/executable/execute",
   "qvc/validation/applyValidators",
   "qvc/constraints/applyConstraints",
   "qvc/validation/Validator",
   "knockout"
 ], function(
+  makeHooks,
   executeMethod,
   applyValidators,
   applyConstraints,
@@ -12,9 +14,10 @@ define([
   ko
 ){
   return function createExecutable(name, type, parameters, hooks, qvc){
+    var hooks = makeHooks(hooks);
     var executable = Object.create(null);
     var execute = function(){
-      executeMethod.call(executable, type, name, executable.hooks, qvc);
+      executeMethod.call(executable, type, name, hooks, qvc);
       return false;
     };
 
@@ -29,49 +32,39 @@ define([
       }) && execute.validator.isValid();
     };
 
-    executable.hooks = {
-      beforeExecute: hooks.beforeExecute || function () {},
-      canExecute: hooks.canExecute || function(){return true;},
-      error: hooks.error || function () {},
-      success: hooks.success || function () {},
-      result: hooks.result || function(){},
-      complete: hooks.complete || function () {},
-      invalid: hooks.invalid || function() {}
-    };
-
     execute.isValid = ko.pureComputed(executable.isValid, executable);
     execute.isBusy = ko.pureComputed(executable.isBusy, executable);
     execute.hasError = ko.pureComputed(executable.hasError, executable);
 
     execute.onSuccess = function(callback){
-      executable.hooks.success = callback;
+      hooks.success = callback;
       return execute;
     };
     execute.onError = function(callback){
-      executable.hooks.error = callback;
+      hooks.error = callback;
       return execute;
     };
     execute.onInvalid = function(callback){
-      executable.hooks.invalid = callback;
+      hooks.invalid = callback;
       return execute;
     };
     execute.beforeExecute = function(callback){
-      executable.hooks.beforeExecute = callback;
+      hooks.beforeExecute = callback;
       return execute;
     };
     execute.canExecute = function(callback){
-      executable.hooks.canExecute = callback;
+      hooks.canExecute = callback;
       return execute;
     };
     execute.result = function(){
       if(arguments.length == 1){
-        executable.hooks.result = arguments[0];
+        hooks.result = arguments[0];
         return execute;
       }
       return executable.result.result;
     };
     execute.onComplete = function(callback){
-      executable.hooks.complete = callback;
+      hooks.complete = callback;
       return execute;
     };
 
