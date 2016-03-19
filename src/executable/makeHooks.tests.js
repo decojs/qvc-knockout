@@ -16,21 +16,22 @@ describe('makeHooks', ['qvc/executable/makeHooks'], function(makeHooks){
       expect(makeHooks().canExecute()).toBe(true);
     });
 
-    it('should have a success callback', function(){
-      expect(makeHooks().success).toBeA(Function);
+    it('should have a onSuccess callback', function(){
+      expect(makeHooks().onSuccess).toBeA(Function);
     });
 
-    it('should have a invalid callback', function(){
-      expect(makeHooks().invalid).toBeA(Function);
+    it('should have a onInvalid callback', function(){
+      expect(makeHooks().onInvalid).toBeA(Function);
     });
 
-    it('should have a error callback', function(){
-      expect(makeHooks().error).toBeA(Function);
+    it('should have a onError callback', function(){
+      expect(makeHooks().onError).toBeA(Function);
     });
 
-    it('should have a complete callback', function(){
-      expect(makeHooks().complete).toBeA(Function);
+    it('should have a onComplete callback', function(){
+      expect(makeHooks().onComplete).toBeA(Function);
     });
+  });
 
   describe('when called with an empty object with the callback for', function(){
     var spy = sinon.spy();
@@ -42,20 +43,20 @@ describe('makeHooks', ['qvc/executable/makeHooks'], function(makeHooks){
       expect(makeHooks({canExecute: spy}).canExecute).toBe(spy);
     });
 
-    it('success should have that success callback', function(){
-      expect(makeHooks({success: spy}).success).toBe(spy);
+    it('onSuccess should have that onSuccess callback', function(){
+      expect(makeHooks({onSuccess: spy}).onSuccess).toBe(spy);
     });
 
-    it('invalid should have that invalid callback', function(){
-      expect(makeHooks({invalid: spy}).invalid).toBe(spy);
+    it('onInvalid should have that onInvalid callback', function(){
+      expect(makeHooks({onInvalid: spy}).onInvalid).toBe(spy);
     });
 
-    it('error should have that error callback', function(){
-      expect(makeHooks({error: spy}).error).toBe(spy);
+    it('onError should have that onError callback', function(){
+      expect(makeHooks({onError: spy}).onError).toBe(spy);
     });
 
-    it('complete should have that complete callback', function(){
-      expect(makeHooks({complete: spy}).complete).toBe(spy);
+    it('onComplete should have that onComplete callback', function(){
+      expect(makeHooks({onComplete: spy}).onComplete).toBe(spy);
     });
   });
 });

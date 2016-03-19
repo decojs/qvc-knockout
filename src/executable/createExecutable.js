@@ -1,5 +1,6 @@
 define([
   "qvc/executable/makeHooks",
+  "qvc/executable/makeChaining",
   "qvc/executable/execute",
   "qvc/validation/applyValidators",
   "qvc/constraints/applyConstraints",
@@ -7,6 +8,7 @@ define([
   "knockout"
 ], function(
   makeHooks,
+  makeChaining,
   executeMethod,
   applyValidators,
   applyConstraints,
@@ -14,12 +16,14 @@ define([
   ko
 ){
   return function createExecutable(name, type, parameters, hooks, qvc){
-    var hooks = makeHooks(hooks);
     var executable = Object.create(null);
+    var hooks = makeHooks(hooks);
     var execute = function(){
       executeMethod.call(executable, type, name, hooks, qvc);
       return false;
     };
+
+    makeChaining(execute, hooks, type);
 
     var validatableFields = applyValidators(parameters, name);
 
@@ -35,38 +39,6 @@ define([
     execute.isValid = ko.pureComputed(executable.isValid, executable);
     execute.isBusy = ko.pureComputed(executable.isBusy, executable);
     execute.hasError = ko.pureComputed(executable.hasError, executable);
-
-    execute.onSuccess = function(callback){
-      hooks.success = callback;
-      return execute;
-    };
-    execute.onError = function(callback){
-      hooks.error = callback;
-      return execute;
-    };
-    execute.onInvalid = function(callback){
-      hooks.invalid = callback;
-      return execute;
-    };
-    execute.beforeExecute = function(callback){
-      hooks.beforeExecute = callback;
-      return execute;
-    };
-    execute.canExecute = function(callback){
-      hooks.canExecute = callback;
-      return execute;
-    };
-    execute.result = function(){
-      if(arguments.length == 1){
-        hooks.result = arguments[0];
-        return execute;
-      }
-      return executable.result.result;
-    };
-    execute.onComplete = function(callback){
-      hooks.complete = callback;
-      return execute;
-    };
 
     execute.validator = executable.validator;
     execute.parameters = Object.seal(parameters);

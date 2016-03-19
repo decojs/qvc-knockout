@@ -16,7 +16,7 @@ define([
 
     this.validate();
     if (!this.isValid()) {
-      hooks.invalid();
+      hooks.onInvalid();
       return;
     }
 
@@ -28,31 +28,30 @@ define([
 
     executeOnServer(type, name, this.parameters, qvc.config)
     .then(function(result){
-      console.log
       if (result.success === true) {
         this.hasError(false);
         this.clearValidationMessages();
-        hooks.success(result);
+        hooks.onSuccess(result);
         if(type === 'query'){
           hooks.result(result.result);
         }
       } else if(result.valid !== true) {
         applyViolations(name, this.parameters, this.validator, result.violations || []);
-        hooks.invalid();
+        hooks.onInvalid();
       }else{
         this.hasError(true);
-        hooks.error(result);
+        hooks.onError(result);
       }
     }.bind(this), function(error){
       this.hasError(true);
-      hooks.error(error);
+      hooks.onError(error);
     }.bind(this))
     .then(function(){
-      hooks.complete();
+      hooks.onComplete();
       this.isBusy(false);
     }.bind(this), function(e){
       console.error(e.message, e.stack);
-      hooks.complete();
+      hooks.onComplete();
       this.isBusy(false);
     }.bind(this));
     return;

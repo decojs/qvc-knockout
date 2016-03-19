@@ -19,7 +19,7 @@ describe("when executing", {
       executable = qvc.createCommand("MyCommand", {}, {
         beforeExecute: beforeExecute.resolve,
         canExecute: canExecute.resolve,
-        invalid: invalidSpy.resolve
+        onInvalid: invalidSpy.resolve
       });
       ajaxMock.spy.reset();
     });
@@ -77,10 +77,10 @@ describe("when executing", {
         "MyCommand",
         parameters,
         {
-          success: successSpy.resolve,
-          complete: completeSpy.resolve,
-          error: errorSpy.resolve,
-          invalid: invalidSpy.resolve
+          onSuccess: successSpy.resolve,
+          onComplete: completeSpy.resolve,
+          onError: errorSpy.resolve,
+          onInvalid: invalidSpy.resolve
         }
       );
       ajaxMock.responseText = "{\"success\":true,\"valid\":true}";
@@ -135,10 +135,10 @@ describe("when executing", {
       executable = qvc.createCommand("MyCommand", {}, {
         beforeExecute: beforeExecute.resolve,
         canExecute: canExecute.resolve,
-        invalid: invalidSpy.resolve,
-        success: successSpy.resolve,
-        complete: completeSpy.resolve,
-        error: errorSpy.resolve
+        onInvalid: invalidSpy.resolve,
+        onSuccess: successSpy.resolve,
+        onComplete: completeSpy.resolve,
+        onError: errorSpy.resolve
       });
 
       executable.validator.validate = function(){
@@ -207,10 +207,10 @@ describe("when executing", {
         "MyCommand",
         parameters,
         {
-          success: successSpy.resolve,
-          complete: completeSpy.resolve,
-          error: errorSpy.resolve,
-          invalid: invalidSpy.resolve
+          onSuccess: successSpy.resolve,
+          onComplete: completeSpy.resolve,
+          onError: errorSpy.resolve,
+          onInvalid: invalidSpy.resolve
         }
       );
       ajaxMock.responseText = "{\"success\":false, \"violations\":[{}]}";
