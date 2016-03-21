@@ -2,14 +2,18 @@ define([
   "qvc/executable/makeHooks",
   "qvc/executable/makeChaining",
   "qvc/executable/executeMethods",
+  "qvc/executable/executeOnServer",
   "qvc/validation/applyValidators",
+  "qvc/validation/applyViolations",
   "qvc/validation/Validator",
   "knockout"
 ], function(
   makeHooks,
   makeChaining,
   executeMethods,
+  executeOnServer,
   applyValidators,
+  applyViolations,
   Validator,
   ko
 ){
