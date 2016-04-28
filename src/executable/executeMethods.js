@@ -26,7 +26,7 @@ define({
       if (result.success === true) {
         onSuccess(result.result)
       } else if(result.valid !== true) {
-        onInvalid();
+        onInvalid(result.violations || []);
       }else{
         onError(result);
       }
