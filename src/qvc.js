@@ -40,7 +40,7 @@ define([
     executeCommand: function(name, parameters, hooks){
       if(name == null || name.length == 0)
         throw new Error("Command is missing name\nA command must have a name!\nusage: executeCommand('name', {parameters}, {hooks})");
-      return executeSimpleExecutable(name, 'command', parameters || {}, hooks || {}, qvc)();
+      return createSimpleExecutable(name, 'command', parameters || {}, hooks || {}, qvc)();
     },
     executeQuery: function(name, parameters, hooks){
       if(name == null || name.length == 0)
